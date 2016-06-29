@@ -1,3 +1,13 @@
-<h3>@Model.GetName()</h3>
-<h4>@Model.GetGender(), @Model.GetPreviousOccupation()</h4>
-<h4>Has been alive for: @Model.GetLifeSpan()</h4>
+
+@foreach(var zombie in Model) {
+<h3>@zombie.GetName()</h3>
+<h4>@zombie.GetGender(), former @zombie.GetFormerOccupation()</h4>
+<h4>Has been alive for: @zombie.GetLifeSpan()</h4>
+}
+<a href="/zombieForm">Add a new ZombieGotchi</a>
+<h6>Day:
+    <span>nothing</span>
+</h6>
+<form action="/dayOver" method="post">
+  <button type="submit">END DAY</button>
+</form>

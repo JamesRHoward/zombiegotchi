@@ -1,28 +1,32 @@
 using Nancy;
-using PlacesBeen.Objects;
+using ZombieGotchi.Objects;
 using System.Collections.Generic;
 
-namespace PlacesBeen
+namespace ZombieGotchi
 {
   public class HomeModule : NancyModule
   {
     public HomeModule()
     {
       Get["/"] = _ => {
-        List<Place> allPlaces = Place.GetAll();
-        return View["index.cshtml", allPlaces];
+        List<Zombie> allZombies = Zombie.GetAll();
+        return View["index.cshtml", allZombies];
       };
-      // Get["/places"] = _ => {
-      //   List<Place> allPlaces = Place.GetAll();
-      //   return View["places.cshtml", allPlaces];
-      // };
-      Get["/goForm"] = _ => {
-        return View["addPlace.cshtml"];
+      Get["/zombieForm"] = _ => {
+        return View["newZombie.cshtml"];
       };
-      Post["/addPlace"] = _ => {
-        Place newPlace = new Place(Request.Form["city"],Request.Form["year"],Request.Form["adj"],Request.Form["imageLink"]);
-        List<Place> allPlaces = Place.GetAll();
-        return View["index.cshtml", allPlaces];
+      Post["/zombie/birth"] = _ => {
+        Zombie newZombie = new Zombie(Request.Form["name"],Request.Form["gender"],Request.Form["formerOccupation"]);
+        List<Zombie> allZombies = Zombie.GetAll();
+        return View["index.cshtml", allZombies];
+      };
+      Post["/dayOver"] = _ => {
+        List<Zombie> allZombies = Zombie.GetAll();
+        foreach (var zombie in allZombies)
+        {
+          zombie.SetLifeSpan(zombie.GetLifeSpan()+1);
+        }
+        return View["index.cshtml", allZombies];
       };
     }
   }

@@ -7,19 +7,19 @@ namespace ZombieGotchi.Objects
     private int _currentTurn = 0;
     private string _name;
     private string _gender;
-    private string _previousOccupation;
-    private int _currentTurnAge;
+    private string _formerOccupation;
+    private int _lifeSpan;
 
     private static List<Zombie> _zombies = new List<Zombie> {};
 
-    public Zombie (string name, string gender, string previousOccupation)
+    public Zombie (string name, string gender, string formerOccupation)
     {
       _name = name;
       _gender = gender;
-      _previousOccupation = previousOccupation;
+      _formerOccupation = formerOccupation;
       _zombies.Add(this);
-      _currentTurnAge = 0;
-      // _id = _instances.Count;
+      _lifeSpan = 0;
+      this.GetCurrentTurn();
 
     }
 
@@ -41,23 +41,23 @@ namespace ZombieGotchi.Objects
     {
       _gender = newGender;
     }
-    public string GetPreviousOccupation()
+    public string GetFormerOccupation()
     {
-      return _previousOccupation;
+      return _formerOccupation;
     }
 
-    public void SetPreviousOccupation(string newPreviousOccupation)
+    public void SetFormerOccupation(string newFormerOccupation)
     {
-      _previousOccupation = newPreviousOccupation;
+      _formerOccupation = newFormerOccupation;
     }
-    public string GetLifeSpan()
+    public int GetLifeSpan()
     {
-      return _LifeSpan;
+      return _lifeSpan;
     }
 
-    public void SetLifeSpan(string newLifeSpan)
+    public void SetLifeSpan(int newLifeSpan)
     {
-      _LifeSpan = newLifeSpan;
+      _lifeSpan = newLifeSpan;
     }
 
     public static List<Zombie> GetAll()
@@ -68,6 +68,15 @@ namespace ZombieGotchi.Objects
     public int GetCurrentTurn()
     {
       return _currentTurn;
+    }
+
+    public void PassTurn()
+    {
+      // _currentTurn ++;
+      foreach (var zombie in _zombies)
+      {
+        zombie.SetLifeSpan(zombie.GetLifeSpan() + 1);
+      }
     }
 
   }
