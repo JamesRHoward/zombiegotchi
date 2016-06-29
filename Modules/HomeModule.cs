@@ -24,7 +24,12 @@ namespace ZombieGotchi
         List<Zombie> allZombies = Zombie.GetAll();
         foreach (var zombie in allZombies)
         {
-          zombie.SetLifeSpan(zombie.GetLifeSpan()+1);
+          if (zombie.IsLiving()) {
+            zombie.SetLifeSpan(zombie.GetLifeSpan()+1);
+            zombie.DailyToll(zombie);
+            string id = zombie.GetId().ToString();
+            zombie.DailyActivities(zombie,Request.Form[id+"feed"],Request.Form[id+"play"],Request.Form[id+"romcom"]);
+          }
         }
         return View["index.cshtml", allZombies];
       };

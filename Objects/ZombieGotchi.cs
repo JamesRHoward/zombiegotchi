@@ -1,15 +1,22 @@
 using System.Collections.Generic;
+using System.Threading;
 
 namespace ZombieGotchi.Objects
 {
   public class Zombie
   {
     private int _currentTurn = 0;
+
     private string _name;
     private string _gender;
     private string _formerOccupation;
     private int _lifeSpan;
+    private int _happiness;
+    private int _hunger;
+    private bool _living;
+    private string VALUETEST;
 
+    private int _id;
     private static List<Zombie> _zombies = new List<Zombie> {};
 
     public Zombie (string name, string gender, string formerOccupation)
@@ -18,9 +25,27 @@ namespace ZombieGotchi.Objects
       _gender = gender;
       _formerOccupation = formerOccupation;
       _zombies.Add(this);
+      _id = _zombies.Count;
       _lifeSpan = 0;
-      this.GetCurrentTurn();
+      _happiness = 100;
+      _hunger = 100;
+      _living = true;
+      VALUETEST = "";
+    }
 
+    public string GetVALUETEST()
+    {
+      return VALUETEST;
+    }
+
+    public void SetVALUETEST(string value)
+    {
+      VALUETEST = value;
+    }
+
+    public bool IsLiving()
+    {
+      return _living;
     }
 
     public string GetName()
@@ -60,24 +85,72 @@ namespace ZombieGotchi.Objects
       _lifeSpan = newLifeSpan;
     }
 
+    public int GetHappy()
+    {
+      return _happiness;
+    }
+    public void SetHappy(int newLevelOfHappiness)
+    {
+      _happiness = newLevelOfHappiness;
+    }
+
+    public int GetHungerLevel()
+    {
+      return _hunger;
+    }
+    public void SetHungerLevel(int newHungerLevel)
+    {
+      _hunger = newHungerLevel;
+    }
+
+    public int GetId()
+    {
+      return _id;
+    }
+
     public static List<Zombie> GetAll()
     {
       return _zombies;
     }
 
-    public int GetCurrentTurn()
-    {
-      return _currentTurn;
-    }
-
-    public void PassTurn()
-    {
-      // _currentTurn ++;
-      foreach (var zombie in _zombies)
+    public static Zombie Find(int searchId)
       {
-        zombie.SetLifeSpan(zombie.GetLifeSpan() + 1);
+        return _zombies[searchId-1];
+      }
+
+
+
+
+    public void DailyToll(Zombie sleepyZombie)
+    {
+      // Random rnd = new Random();
+      // int levelOfHappinessLost = rnd.Next(1, 16);
+      int previousHappiness = sleepyZombie.GetHappy();
+      if (previousHappiness < 11) {
+        previousHappiness = 11;
+      }
+      sleepyZombie.SetHappy(previousHappiness - 11);
+      sleepyZombie.SetHungerLevel(sleepyZombie.GetHungerLevel() - 15);
+      if (sleepyZombie.GetHungerLevel() <= 0)
+      {
+        _living = false;
       }
     }
-
+    public void DailyActivities(Zombie daytimeZombie, string feedValue, string playValue, string romcomValue)
+    {
+      daytimeZombie.SetVALUETEST(feedValue);
+      if (feedValue == "success" && daytimeZombie.IsLiving())
+      {
+        daytimeZombie.SetHungerLevel(daytimeZombie.GetHungerLevel()+16);
+      }
+      if (playValue == "success" && daytimeZombie.IsLiving())
+      {
+        daytimeZombie.SetHappy(daytimeZombie.GetHappy()+9);
+      }
+      if (romcomValue == "success" && daytimeZombie.IsLiving())
+      {
+        daytimeZombie.SetHappy(daytimeZombie.GetHappy()-13);
+      }
+    }
   }
 }

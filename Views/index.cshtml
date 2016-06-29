@@ -1,13 +1,23 @@
-
+<marquee>ZombieGotchi OMG!</marquee>
+<form action="/dayOver" method="post">
 @foreach(var zombie in Model) {
-<h3>@zombie.GetName()</h3>
-<h4>@zombie.GetGender(), former @zombie.GetFormerOccupation()</h4>
-<h4>Has been alive for: @zombie.GetLifeSpan()</h4>
+  <h3>@zombie.GetName()</h3>
+  <h4>@zombie.GetGender(), former @zombie.GetFormerOccupation()</h4>
+  <h4>Has been alive for: @zombie.GetLifeSpan()</h4>
+  <h4>Happiness level: @zombie.GetHappy()</h4>
+  <h4>Hungriness level: @zombie.GetHungerLevel()</h4>
+  @if (!zombie.IsLiving()) {
+    <h1>DEAD --- GAME OVER</h1>
+  }
+  <input type="checkbox" name="@zombie.GetId()feed" id="@zombie.GetId()feed" value="success"><label for="feed">Feed brains</label><br>
+  <input type="checkbox" name="@zombie.GetId()play" id="@zombie.GetId()play" value="success"><label for="play">Play fetch with bone</label><br>
+  <input type="checkbox" name="@zombie.GetId()romcom" id="@zombie.GetId()romcom" value="success"><label for="romcom">Watch romantic comedy</label><br>
+  <h5>@zombie.GetVALUETEST()</h5>
 }
 <a href="/zombieForm">Add a new ZombieGotchi</a>
 <h6>Day:
     <span>nothing</span>
 </h6>
-<form action="/dayOver" method="post">
+
   <button type="submit">END DAY</button>
 </form>
